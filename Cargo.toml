@@ -1,0 +1,34 @@
+[package]
+name = "file-organizer"
+version = "1.0.0"
+edition = "2021"
+authors = ["File Organizer"]
+description = "Organizador de arquivos por extensão — rápido, paralelo e seguro"
+
+[[bin]]
+name = "file-organizer"
+path = "src/main.rs"
+
+[dependencies]
+# Paralelismo de dados sem esforço — divide o trabalho entre threads automaticamente
+rayon = "1.10"
+
+# Argumentos de linha de comando com help automático e validação
+clap = { version = "4.5", features = ["derive"] }
+
+# Barras de progresso visuais no terminal
+indicatif = "0.17"
+
+# Cores no terminal para mensagens de status
+colored = "2.1"
+
+# Geração de UUIDs para evitar colisão de nomes de arquivos duplicados
+uuid = { version = "1.8", features = ["v4"] }
+
+# Contadores atômicos thread-safe para estatísticas em paralelo
+[profile.release]
+opt-level = 3          # Otimização máxima de velocidade
+lto = true             # Link-Time Optimization — reduz binário e aumenta performance
+codegen-units = 1      # Mais lento para compilar, mais rápido para executar
+strip = true           # Remove símbolos de debug do binário final
+panic = "abort"        # Sem stack unwinding — binário menor e mais rápido
